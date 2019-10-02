@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -29,11 +30,12 @@ func TransferRecipient(user model.User, l *model.Loan, db *gorm.DB) (error, PayS
 		"bank_code":      {l.BankCode},
 		"currency":       {"NGN"},
 	}
+
 	fmt.Println(" form encoded ", form.Encode())
 	tR, _ := http.NewRequest("POST", "https://api.paystack.co/transferrecipient", strings.NewReader(form.Encode()))
 	client := &http.Client{}
 	tR.Header.Set("content-type", "application/x-www-form-urlencoded")
-	tR.Header.Set("Authorization", "Bearer sk_test_8505c3e29636987a3a57cc5cc8ff8aa7ca7194c8")
+	tR.Header.Set("Authorization", "Bearer "+os.Getenv("PAYSTACK_SECRET_KEY"))
 	resp, err := client.Do(tR)
 
 	if err != nil {
@@ -71,7 +73,7 @@ func Transfer(recipientCode string, loan *model.Loan, user model.User, db *gorm.
 	tR, _ := http.NewRequest("POST", "https://api.paystack.co/transfer", strings.NewReader(form.Encode()))
 	client := &http.Client{}
 	tR.Header.Set("content-type", "application/x-www-form-urlencoded")
-	tR.Header.Set("Authorization", "Bearer sk_test_8505c3e29636987a3a57cc5cc8ff8aa7ca7194c8")
+	tR.Header.Set("Authorization", "Bearer "+os.Getenv("PAYSTACK_SECRET_KEY"))
 	resp, err := client.Do(tR)
 
 	if err != nil {
