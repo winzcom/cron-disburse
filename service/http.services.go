@@ -30,8 +30,6 @@ func TransferRecipient(user model.User, l *model.Loan, db *gorm.DB) (error, PayS
 		"bank_code":      {l.BankCode},
 		"currency":       {"NGN"},
 	}
-
-	fmt.Println(" form encoded ", form.Encode())
 	tR, _ := http.NewRequest("POST", "https://api.paystack.co/transferrecipient", strings.NewReader(form.Encode()))
 	client := &http.Client{}
 	tR.Header.Set("content-type", "application/x-www-form-urlencoded")

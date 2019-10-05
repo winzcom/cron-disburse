@@ -3,6 +3,7 @@ package service
 import (
 	"cron-disburse/model"
 	"fmt"
+	"os"
 	"sync"
 
 	"time"
@@ -12,7 +13,7 @@ import (
 )
 
 func Connect() *gorm.DB {
-	db, err := gorm.Open("mysql", "acreditbb:N0tju5tm3*&^@(stagingdb.cluster-ce681ga45xey.eu-west-1.rds.amazonaws.com)/aella_money?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", os.Getenv("DB_USERNAME")+":"+os.Getenv("DB_PASSWORD")+"@(stagingdb.cluster-ce681ga45xey.eu-west-1.rds.amazonaws.com)/aella_money?charset=utf8&parseTime=True&loc=Local")
 
 	if err != nil {
 		panic("error connecting to the DB")
