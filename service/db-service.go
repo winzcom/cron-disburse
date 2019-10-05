@@ -3,7 +3,6 @@ package service
 import (
 	"cron-disburse/model"
 	"fmt"
-	"os"
 	"sync"
 
 	"time"
@@ -59,9 +58,7 @@ func FindCards(userId int, db *gorm.DB) []model.Card {
 
 func ApprovedLoan(db *gorm.DB, c chan []model.Loan, allLoans chan bool, more chan bool) {
 	var loans []model.Loan
-	fmt.Println("paystack key ", os.Getenv("PAYSTACK_SECRET_KEY"))
 	t := time.Now()
-	fmt.Println("second ", t.Second())
 	t1 := t.Add(time.Hour * 24 * -3)
 	for i := 0; i < 2; i++ {
 		format := t1.Format("2006-01-02")
@@ -70,7 +67,6 @@ func ApprovedLoan(db *gorm.DB, c chan []model.Loan, allLoans chan bool, more cha
 		<-more
 		time.Sleep(1 * time.Second)
 	}
-	fmt.Println("finished ", time.Now().Second())
 	allLoans <- true
 }
 
@@ -100,7 +96,6 @@ func Run(db *gorm.DB, done chan<- bool, cha chan []model.Loan) {
 				wg.Wait()
 				more <- true
 			case <-allLoans:
-				fmt.Println("all done returning")
 				done <- true
 				db.Close()
 				return

@@ -25,12 +25,7 @@ func main() {
 		done := make(chan bool, 1)
 
 		w.Write([]byte("Running"))
-
-		//defer db.Close()
-
-		defer func() {
-			go service.Run(db, done, cha)
-		}()
+		go service.Run(db, done, cha)
 		return
 	})
 
