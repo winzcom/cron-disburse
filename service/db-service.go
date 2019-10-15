@@ -19,16 +19,9 @@ func Connect() *gorm.DB {
 		panic("error connecting to the DB")
 	}
 
-	db.LogMode(true)
+	//db.LogMode(true)
 
 	return db
-	// var (
-	// 	loans []model.Loan
-	// 	user  model.User
-	// )
-	//query := db.Table("loan_requests").Model(&loans)
-
-	//fmt.Println(query)
 }
 
 func FindUser(loan model.Loan, db *gorm.DB) model.User {
